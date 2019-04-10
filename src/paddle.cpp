@@ -1,15 +1,20 @@
 #include "paddle.h"
+#include "pong.h"
 
 Paddle::Paddle(const int startx) {
-    position.set(startx, 0);
+    position.set(startx, 285);
 }
 
 void Paddle::MoveUp() {
-    position += MOVERATE;
+    if (position.y + HEIGHT <= Pong::GetBoardHeight()) {
+        position.y += MOVERATE;
+    }
 }
 
 void Paddle::MoveDown() {
-    position -= MOVERATE;
+    if (position.y >= 0) {
+        position.y -= MOVERATE;
+    }
 }
 
 const ofVec2f& Paddle::GetPosition() const {
@@ -22,4 +27,9 @@ const int& Paddle::GetHeight() const {
 
 const int& Paddle::GetWidth() const {
     return WIDTH;
+}
+
+void Paddle::SetPosition(ofVec2f& newposition) {
+    position.x = newposition.x;
+    position.y = newposition.y;
 }

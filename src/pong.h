@@ -14,6 +14,11 @@ private:
 
     const int BOARDHEIGHT = 720;
     const int BOARDWIDTH = 1280;
+    const int WINNINGSCORE = 7;
+
+    void UpdateScore();
+    void UpdateBall();
+    void ResetPositions();
 public:
     static int GetBoardHeight() {return 720;};
     static int GetBoardWidth() {return 1280;};

@@ -3,7 +3,7 @@
 
 Ball::Ball() {
     position.set(Pong::GetBoardWidth() / 2, Pong::GetBoardHeight() / 2);
-    speed.set(10, 0);
+    speed.set(STARTINGSPEED, 0);
 }
 
 void Ball::UpdatePosition() {
@@ -16,9 +16,27 @@ const ofVec2f& Ball::GetPosition() const {
 }
 
 void Ball::SetSpeed(const ofVec2f& newspeed) {
-    speed = newspeed;
+    speed.x = newspeed.x;
+    speed.y = newspeed.y;
 }
 
 const ofVec2f& Ball::GetSpeed() const {
     return speed;
+}
+
+int Ball::GetSize() const {
+    return SIZE;
+}
+
+float Ball::GetMaxBounceAngle() const {
+    return MAXBOUNCEANGLE;
+}
+
+int Ball::GetStartingSpeed() const {
+    return STARTINGSPEED;
+}
+
+void Ball::SetPosition(ofVec2f& newposition) {
+    position.x = newposition.x;
+    position.y = newposition.y;
 }

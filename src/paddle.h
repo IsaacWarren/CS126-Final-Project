@@ -14,6 +14,7 @@ public:
     void MoveDown();
     void StopMoving();
     const ofVec2f& GetPosition() const;
+    void SetPosition(ofVec2f& newposition);
     const int& GetHeight() const;
     const int& GetWidth() const;
 };

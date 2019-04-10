@@ -3,9 +3,9 @@
 Player::Player(const int startx) : paddle(startx) {}
 
 void Player::Update() {
-    if (direction > 0) {
+    if (direction < 0) {
         paddle.MoveUp();
-    } else if (direction < 0) {
+    } else if (direction > 0) {
         paddle.MoveDown();
     }
 }
