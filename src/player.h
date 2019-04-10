@@ -1,10 +1,15 @@
 #pragma once
 
 #include "ofMain.h"
+#include "paddle.h"
 
 class Player {
 private:
     Paddle paddle;
+    int direction;
 public:
-    Update();
+    Player(const int startx);
+    void Update();
+    void SetDirection(const int toset);
+    const Paddle& GetPaddle() const;
 };

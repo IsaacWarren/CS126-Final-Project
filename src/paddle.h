@@ -5,9 +5,15 @@
 class Paddle {
 private:
     ofVec2f position;
+    const int MOVERATE = 10;
+    const int HEIGHT  = 150;
+    const int WIDTH = 40;
 public:
-    Paddle();
-    MoveUp();
-    MoveDown();
-    GetPosition();
+    Paddle(const int startx);
+    void MoveUp();
+    void MoveDown();
+    void StopMoving();
+    const ofVec2f& GetPosition() const;
+    const int& GetHeight() const;
+    const int& GetWidth() const;
 };

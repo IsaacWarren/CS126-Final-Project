@@ -5,6 +5,6 @@
 
 class AI: public Player {
 public:
-    Update();
-    GenerateOffspring();
+    void Update();
+    AI GenerateOffspring();
 };

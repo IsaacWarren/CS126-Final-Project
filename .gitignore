@@ -509,3 +509,4 @@ healthchecksdb
 MigrationBackup/
 
 # End of https://www.gitignore.io/api/c++,xcode,visualstudio,openframeworks,openframeworks+visualstudio
+.vscode
