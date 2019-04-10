@@ -6,4 +6,5 @@
 class AI: public Player {
 public:
     Update();
+    GenerateOffspring();
 };
