@@ -1,5 +1,5 @@
 #include "pong.h"
-#include <iostream>
+#include <random>
 
 Pong::Pong() :player1(0), player2(1240) {}
 
@@ -89,7 +89,10 @@ void Pong::ResetPositions() {
     ofVec2f ballposition;
     ballposition.set(Pong::GetBoardWidth() / 2, Pong::GetBoardHeight() / 2);
     ofVec2f ballspeed;
-    ballspeed.set(ball.GetStartingSpeed(),0);
+
+    lastserv *= -1;
+    ballspeed.set(ball.GetStartingSpeed() * lastserv,0);
+
     ball.SetPosition(ballposition);
     ball.SetSpeed(ballspeed);
 }

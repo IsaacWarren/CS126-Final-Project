@@ -1,5 +1,5 @@
 #include "pongai.h"
-#include <iostream>
+#include <random>
 
 PongAI::PongAI() :player1(0), player2(1240) {}
 
@@ -89,7 +89,10 @@ void PongAI::ResetPositions() {
     ofVec2f ballposition;
     ballposition.set(PongAI::GetBoardWidth() / 2, PongAI::GetBoardHeight() / 2);
     ofVec2f ballspeed;
-    ballspeed.set(ball.GetStartingSpeed(),0);
+
+    lastserv *= -1;
+    ballspeed.set(ball.GetStartingSpeed() * lastserv,0);
+
     ball.SetPosition(ballposition);
     ball.SetSpeed(ballspeed);
 }

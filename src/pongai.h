@@ -12,6 +12,7 @@ private:
     int player1score;
     int player2score;
     Ball ball;
+    int lastserv = 1;
 
     const int BOARDHEIGHT = 720;
     const int BOARDWIDTH = 1280;
