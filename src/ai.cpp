@@ -1,7 +1,7 @@
 #include "ai.h"
 
 AI::AI(const int startx): paddle(startx) {
-    const unsigned int creator = { num_input, num_neurons_hidden, num_output};
+    const unsigned int creator[] = { num_input, num_neurons_hidden, num_output};
     net.create_standard_array(num_layers, creator);
     net.set_activation_function_hidden(FANN::activation_function_enum::SIGMOID_SYMMETRIC);
     net.set_activation_function_output(FANN::activation_function_enum::SIGMOID_SYMMETRIC);
