@@ -20,15 +20,15 @@ void PongGame::draw() {
                      pong.GetPlayer2().GetPaddle().GetHeight());
 
     ofDrawBitmapString(pong.GetPlayer1Score(), 200, 100);
-    ofDrawBitmapString(pong.GetPlayer2Score(), Pong::GetBoardWidth() - 210, 100);
+    ofDrawBitmapString(pong.GetPlayer2Score(), PongAI::GetBoardWidth() - 210, 100);
 }
 
 void PongGame::keyPressed(int key) {
     if (key == 'w') {
-        pong.GetPlayer1().SetDirection(1);
+        //pong.GetPlayer1().SetDirection(1);
     }
     if (key == 's') {
-        pong.GetPlayer1().SetDirection(-1);
+        //pong.GetPlayer1().SetDirection(-1);
     }
 
     if (key == OF_KEY_UP) {
@@ -41,7 +41,7 @@ void PongGame::keyPressed(int key) {
 
 void PongGame::keyReleased(int key) {
     if (key == 'w' || key == 's') {
-        pong.GetPlayer1().SetDirection(0);
+        //pong.GetPlayer1().SetDirection(0);
     }
 
     if (key == OF_KEY_UP || key == OF_KEY_DOWN) {

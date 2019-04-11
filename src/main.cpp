@@ -3,7 +3,7 @@
 #define framerate 60
 
 int main() {
-    ofSetupOpenGL(Pong::GetBoardWidth(), Pong::GetBoardHeight(), OF_WINDOW); // setup the GL context
+    ofSetupOpenGL(PongAI::GetBoardWidth(), PongAI::GetBoardHeight(), OF_WINDOW); // setup the GL context
 	ofSetFrameRate(framerate); // An appropriate framerate that moves the snake at a good speed
 						// Due to the simple nature of our objects rendering things this slow should not cause visual discomfort or lage
 	

@@ -13,9 +13,10 @@ private:
     const unsigned int num_layers = 3;
     const unsigned int num_neurons_hidden = 8;
 
-    unique_ptr<FANN::neural_net> net;
+    FANN::neural_net net;
 public:
     AI(const int startx);
-    void Update();
+    void Update(const ofVec2f& ballposition);
+    const Paddle& GetPaddle() const;
     AI GenerateOffspring();
 };

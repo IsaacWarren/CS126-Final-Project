@@ -1,9 +1,9 @@
 #include "ofMain.h"
-#include "pong.h"
+#include "pongai.h"
 
 class PongGame : public ofBaseApp {
 private:
-    Pong pong;
+    PongAI pong;
 public:
     void setup();
 
