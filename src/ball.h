@@ -9,7 +9,7 @@ private:
     ofVec2f position;
     ofVec2f speed;
 
-    const int STARTINGSPEED = 10;
+    const int STARTINGSPEED = 15;
     const int SIZE = 40;
     const float MAXBOUNCEANGLE = 4*PI/12;
 public:
