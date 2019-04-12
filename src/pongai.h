@@ -31,4 +31,5 @@ public:
     const Ball& GetBall() const;
     int GetPlayer1Score() const;
     int GetPlayer2Score() const;
+    const int GetWinningScore() const;
 };

@@ -96,3 +96,7 @@ void Pong::ResetPositions() {
     ball.SetPosition(ballposition);
     ball.SetSpeed(ballspeed);
 }
+
+const int Pong::GetWinningScore() const {
+    return WINNINGSCORE;
+}

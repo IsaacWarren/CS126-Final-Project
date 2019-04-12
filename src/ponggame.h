@@ -4,6 +4,11 @@
 class PongGame : public ofBaseApp {
 private:
     PongAI pong;
+	enum GameState {RUNNING, COMPLETED};
+	GameState gamestate = RUNNING;
+	bool CheckForWinner();
+	void DrawRunning();
+	void DrawCompleted();
 public:
     void setup();
 

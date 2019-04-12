@@ -96,3 +96,7 @@ void PongAI::ResetPositions() {
     ball.SetPosition(ballposition);
     ball.SetSpeed(ballspeed);
 }
+
+const int PongAI::GetWinningScore() const {
+    return WINNINGSCORE;
+}
