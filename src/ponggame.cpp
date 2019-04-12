@@ -7,8 +7,10 @@ void PongGame::setup() {
 }
 
 void PongGame::update() {
-    pong.Update();
-    CheckForWinner();
+    if (gamestate == RUNNING) {
+        pong.Update();
+        CheckForWinner();
+    }
 }
 
 void PongGame::draw() {
@@ -21,11 +23,8 @@ void PongGame::draw() {
 }
 
 void PongGame::keyPressed(int key) {
-    if (key == 'w') {
-        //pong.GetPlayer1().SetDirection(1);
-    }
-    if (key == 's') {
-        //pong.GetPlayer1().SetDirection(-1);
+    if (key == 'r') {
+        Reset();
     }
 
     if (key == OF_KEY_UP) {
@@ -37,10 +36,6 @@ void PongGame::keyPressed(int key) {
 }
 
 void PongGame::keyReleased(int key) {
-    if (key == 'w' || key == 's') {
-        //pong.GetPlayer1().SetDirection(0);
-    }
-
     if (key == OF_KEY_UP || key == OF_KEY_DOWN) {
         pong.GetPlayer2().SetDirection(0);
     }
@@ -71,8 +66,15 @@ void PongGame::DrawRunning() {
 void PongGame::DrawCompleted() {
     ofSetColor(255,255,255);
     if (pong.GetPlayer1Score() > pong.GetPlayer2Score()) {
-        ofDrawBitmapString("Player1 won", PongAI::GetBoardWidth() / 2, 100);
+        ofDrawBitmapString("Player1 won press R to Reset", PongAI::GetBoardWidth() / 2 - 100, 100);
     } else {
-        ofDrawBitmapString("Player2 won", PongAI::GetBoardWidth() / 2, 100);
+        ofDrawBitmapString("Player2 won press R to Reset", PongAI::GetBoardWidth() / 2 - 100, 100);
     }
+}
+
+void PongGame::Reset() {
+    gamestate = RUNNING;
+    pong.ResetPlayer1Score();
+    pong.ResetPlayer2Score();
+    pong.ResetPositions();
 }

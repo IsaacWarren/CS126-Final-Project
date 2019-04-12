@@ -17,6 +17,6 @@ private:
 public:
     AI(const int startx);
     void Update(const ofVec2f& ballposition);
-    const Paddle& GetPaddle() const;
+    Paddle& GetPaddle();
     AI GenerateOffspring();
 };

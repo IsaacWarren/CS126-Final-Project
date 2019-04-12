@@ -11,5 +11,5 @@ public:
     Player(const int startx);
     void Update();
     void SetDirection(const int toset);
-    const Paddle& GetPaddle() const;
+    Paddle& GetPaddle();
 };

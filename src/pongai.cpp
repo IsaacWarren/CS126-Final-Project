@@ -30,6 +30,14 @@ int PongAI::GetPlayer2Score() const {
     return player2score;
 }
 
+void PongAI::ResetPlayer1Score() {
+    player1score = 0;
+}
+
+void PongAI::ResetPlayer2Score() {
+    player2score = 0;
+}
+
 void PongAI::UpdateScore() {
     float ballx = ball.GetPosition().x;
     if (ballx + ball.GetSize() >= BOARDWIDTH) {
@@ -95,6 +103,11 @@ void PongAI::ResetPositions() {
 
     ball.SetPosition(ballposition);
     ball.SetSpeed(ballspeed);
+
+    player1.GetPaddle().SetPosition(player1.GetPaddle().GetPosition().x,
+                        BOARDHEIGHT / 2 - player1.GetPaddle().GetHeight() / 2);
+    player2.GetPaddle().SetPosition(player2.GetPaddle().GetPosition().x,
+                        BOARDHEIGHT / 2 - player2.GetPaddle().GetHeight() / 2);
 }
 
 const int PongAI::GetWinningScore() const {

@@ -20,7 +20,6 @@ private:
     
     void UpdateScore();
     void UpdateBall();
-    void ResetPositions();
 public:
     static int GetBoardHeight() {return 720;};
     static int GetBoardWidth() {return 1280;};
@@ -31,5 +30,8 @@ public:
     const Ball& GetBall() const;
     int GetPlayer1Score() const;
     int GetPlayer2Score() const;
+    void ResetPlayer1Score();
+    void ResetPlayer2Score();
     const int GetWinningScore() const;
+    void ResetPositions();
 };

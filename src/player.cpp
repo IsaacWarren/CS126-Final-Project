@@ -14,6 +14,6 @@ void Player::SetDirection(const int toset) {
     direction = toset;
 }
 
-const Paddle& Player::GetPaddle() const {
+Paddle& Player::GetPaddle() {
     return paddle;
 }

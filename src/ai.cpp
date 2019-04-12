@@ -24,6 +24,6 @@ void AI::Update(const ofVec2f& ballposition) {
     }
 }
 
-const Paddle& AI::GetPaddle() const {
+Paddle& AI::GetPaddle() {
     return paddle;
 }

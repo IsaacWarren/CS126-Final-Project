@@ -29,7 +29,7 @@ const int& Paddle::GetWidth() const {
     return WIDTH;
 }
 
-void Paddle::SetPosition(ofVec2f& newposition) {
-    position.x = newposition.x;
-    position.y = newposition.y;
+void Paddle::SetPosition(float newx, float newy) {
+    position.x = newx;
+    position.y = newy;
 }

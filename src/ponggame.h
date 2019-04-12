@@ -9,6 +9,7 @@ private:
 	bool CheckForWinner();
 	void DrawRunning();
 	void DrawCompleted();
+	void Reset();
 public:
     void setup();
 
