@@ -27,12 +27,17 @@ void PongGame::keyPressed(int key) {
         Reset();
     }
 
+    if (key == OF_KEY_ESC) {
+        exit();
+    }
+
     if (key == OF_KEY_UP) {
         pong.GetPlayer2().SetDirection(1);
     }
     if (key == OF_KEY_DOWN) {
         pong.GetPlayer2().SetDirection(-1);
     }
+
 }
 
 void PongGame::keyReleased(int key) {

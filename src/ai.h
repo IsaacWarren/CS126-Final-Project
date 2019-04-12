@@ -4,6 +4,7 @@
 #include "player.h"
 #include "floatfann.h"
 #include "fann_cpp.h"
+#include <random>
 
 class AI {
 private:
@@ -16,6 +17,7 @@ private:
     FANN::neural_net net;
 public:
     AI(const int startx);
+    AI(const int startx, FANN::neural_net);
     void Update(const ofVec2f& ballposition);
     Paddle& GetPaddle();
     AI GenerateOffspring();
