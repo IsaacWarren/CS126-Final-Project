@@ -7,10 +7,10 @@
 
 class PongAI {
 private:
-    AI player1;
-    Player player2;
-    int player1score;
-    int player2score;
+    Player& player1;
+    Player& player2;
+    int player1score = 0;
+    int player2score = 0;
     Ball ball;
     int lastserv = 1;
 
@@ -23,9 +23,9 @@ private:
 public:
     static int GetBoardHeight() {return 720;};
     static int GetBoardWidth() {return 1280;};
-    PongAI();
+    PongAI(Player& player1, Player& player2);
     void Update();
-    AI& GetPlayer1();
+    Player& GetPlayer1();
     Player& GetPlayer2();
     const Ball& GetBall() const;
     int GetPlayer1Score() const;

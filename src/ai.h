@@ -6,7 +6,7 @@
 #include "fann_cpp.h"
 #include <random>
 
-class AI {
+class AI: public Player {
 private:
     Paddle paddle;
     const unsigned int num_input = 4;
@@ -19,6 +19,7 @@ public:
     AI(const int startx);
     AI(const int startx, FANN::neural_net);
     void Update(const ofVec2f& ballposition);
+    void SetDirection(const int toset){};
     Paddle& GetPaddle();
     AI GenerateOffspring();
 };

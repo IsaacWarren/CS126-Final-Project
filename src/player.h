@@ -5,11 +5,11 @@
 
 class Player {
 private:
-    Paddle paddle;
+    Paddle paddle = 0;
     int direction;
 public:
-    Player(const int startx);
-    void Update();
-    void SetDirection(const int toset);
-    Paddle& GetPaddle();
+    virtual ~Player(){};
+    virtual void Update(const ofVec2f& ballposition) = 0;
+    virtual void SetDirection(const int toset) = 0;
+    virtual Paddle& GetPaddle() = 0;
 };

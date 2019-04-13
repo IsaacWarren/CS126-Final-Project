@@ -1,12 +1,12 @@
 #include "paddle.h"
-#include "pong.h"
+#include "pongai.h"
 
 Paddle::Paddle(const int startx) {
     position.set(startx, 285);
 }
 
 void Paddle::MoveUp() {
-    if (position.y + HEIGHT <= Pong::GetBoardHeight()) {
+    if (position.y + HEIGHT <= PongAI::GetBoardHeight()) {
         position.y += MOVERATE;
     }
 }

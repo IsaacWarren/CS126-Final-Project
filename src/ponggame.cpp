@@ -4,11 +4,26 @@
 void PongGame::setup() {
     ofSetWindowTitle("Pong");
     ofBackground(0,0,0);
+    players.push_back(new AI(0));
+    players.push_back(new Human(1240));
+    pong = new PongAI(*players[0], *players[1]);
+}
+
+void PongGame::exit() {
+    if (pong != nullptr) {
+        delete pong;
+    }
+
+    for (Player* playerpointer : players) {
+        if (playerpointer != nullptr) {
+            delete playerpointer;
+        }
+    }
 }
 
 void PongGame::update() {
     if (gamestate == RUNNING) {
-        pong.Update();
+        pong->Update();
         CheckForWinner();
     }
 }
@@ -28,26 +43,26 @@ void PongGame::keyPressed(int key) {
     }
 
     if (key == OF_KEY_ESC) {
-        exit();
+        ofExit();
     }
 
     if (key == OF_KEY_UP) {
-        pong.GetPlayer2().SetDirection(1);
+        pong->GetPlayer2().SetDirection(1);
     }
     if (key == OF_KEY_DOWN) {
-        pong.GetPlayer2().SetDirection(-1);
+        pong->GetPlayer2().SetDirection(-1);
     }
 
 }
 
 void PongGame::keyReleased(int key) {
     if (key == OF_KEY_UP || key == OF_KEY_DOWN) {
-        pong.GetPlayer2().SetDirection(0);
+        pong->GetPlayer2().SetDirection(0);
     }
 }
 
 bool PongGame::CheckForWinner() {
-    if (pong.GetPlayer1Score() == pong.GetWinningScore() || pong.GetPlayer2Score() == pong.GetWinningScore()) {
+    if (pong->GetPlayer1Score() == pong->GetWinningScore() || pong->GetPlayer2Score() == pong->GetWinningScore()) {
         gamestate = COMPLETED;
         return true;
     }
@@ -58,19 +73,19 @@ bool PongGame::CheckForWinner() {
 void PongGame::DrawRunning() {
     ofSetColor(255,255,255);
 
-    ofDrawRectangle(pong.GetBall().GetPosition(), pong.GetBall().GetSize(), pong.GetBall().GetSize());
-    ofDrawRectangle(pong.GetPlayer1().GetPaddle().GetPosition(), pong.GetPlayer1().GetPaddle().GetWidth(),
-                    pong.GetPlayer1().GetPaddle().GetHeight());
-    ofDrawRectangle(pong.GetPlayer2().GetPaddle().GetPosition(), pong.GetPlayer2().GetPaddle().GetWidth(),
-                     pong.GetPlayer2().GetPaddle().GetHeight());
+    ofDrawRectangle(pong->GetBall().GetPosition(), pong->GetBall().GetSize(), pong->GetBall().GetSize());
+    ofDrawRectangle(pong->GetPlayer1().GetPaddle().GetPosition(), pong->GetPlayer1().GetPaddle().GetWidth(),
+                    pong->GetPlayer1().GetPaddle().GetHeight());
+    ofDrawRectangle(pong->GetPlayer2().GetPaddle().GetPosition(), pong->GetPlayer2().GetPaddle().GetWidth(),
+                     pong->GetPlayer2().GetPaddle().GetHeight());
 
-    ofDrawBitmapString(pong.GetPlayer1Score(), 200, 100);
-    ofDrawBitmapString(pong.GetPlayer2Score(), PongAI::GetBoardWidth() - 210, 100);
+    ofDrawBitmapString(pong->GetPlayer1Score(), 200, 100);
+    ofDrawBitmapString(pong->GetPlayer2Score(), PongAI::GetBoardWidth() - 210, 100);
 }
 
 void PongGame::DrawCompleted() {
     ofSetColor(255,255,255);
-    if (pong.GetPlayer1Score() > pong.GetPlayer2Score()) {
+    if (pong->GetPlayer1Score() > pong->GetPlayer2Score()) {
         ofDrawBitmapString("Player1 won press R to Reset", PongAI::GetBoardWidth() / 2 - 100, 100);
     } else {
         ofDrawBitmapString("Player2 won press R to Reset", PongAI::GetBoardWidth() / 2 - 100, 100);
@@ -79,7 +94,7 @@ void PongGame::DrawCompleted() {
 
 void PongGame::Reset() {
     gamestate = RUNNING;
-    pong.ResetPlayer1Score();
-    pong.ResetPlayer2Score();
-    pong.ResetPositions();
+    pong->ResetPlayer1Score();
+    pong->ResetPlayer2Score();
+    pong->ResetPositions();
 }

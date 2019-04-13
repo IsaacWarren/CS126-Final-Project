@@ -1,8 +1,8 @@
 #include "ball.h"
-#include "pong.h"
+#include "pongai.h"
 
 Ball::Ball() {
-    position.set(Pong::GetBoardWidth() / 2, Pong::GetBoardHeight() / 2);
+    position.set(PongAI::GetBoardWidth() / 2, PongAI::GetBoardHeight() / 2);
     speed.set(STARTINGSPEED, 0);
 }
 

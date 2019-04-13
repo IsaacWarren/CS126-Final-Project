@@ -1,16 +1,17 @@
 #include "pongai.h"
 #include <random>
 
-PongAI::PongAI() :player1(0), player2(1240) {}
+PongAI::PongAI(Player& player1toset, Player& player2toset) :player1(player1toset), player2(player2toset){}
+
 
 void PongAI::Update() {
     UpdateScore();
     UpdateBall();
     player1.Update(ball.GetPosition());
-    player2.Update();
+    player2.Update(ball.GetPosition());
 }
 
-AI& PongAI::GetPlayer1(){
+Player& PongAI::GetPlayer1(){
     return player1;
 }
 
