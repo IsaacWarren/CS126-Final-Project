@@ -4,7 +4,7 @@
 void PongGame::setup() {
     ofSetWindowTitle("Pong");
     ofBackground(0,0,0);
-    players.push_back(new AI(0));
+    players.push_back(new Human(0));
     players.push_back(new Human(1240));
     pong = new PongAI(*players[0], *players[1]);
 }
@@ -46,6 +46,12 @@ void PongGame::keyPressed(int key) {
         ofExit();
     }
 
+    if (key == 'w') {
+        pong->GetPlayer1().SetDirection(1);
+    }
+    if (key == 's') {
+        pong->GetPlayer1().SetDirection(-1);
+    }
     if (key == OF_KEY_UP) {
         pong->GetPlayer2().SetDirection(1);
     }
@@ -58,6 +64,9 @@ void PongGame::keyPressed(int key) {
 void PongGame::keyReleased(int key) {
     if (key == OF_KEY_UP || key == OF_KEY_DOWN) {
         pong->GetPlayer2().SetDirection(0);
+    }
+    if (key == 'w' || key == 's') {
+        pong->GetPlayer1().SetDirection(0);
     }
 }
 

@@ -114,3 +114,15 @@ void PongAI::ResetPositions() {
 const int PongAI::GetWinningScore() const {
     return WINNINGSCORE;
 }
+
+bool PongAI::IsWinner() const {
+    return player1score >= WINNINGSCORE || player2score >= WINNINGSCORE;
+}
+
+Player& PongAI::GetWinner() const {
+    if (player1score >= WINNINGSCORE) {
+        return player1;
+    }
+
+    return player2;
+}

@@ -34,4 +34,6 @@ public:
     void ResetPlayer2Score();
     const int GetWinningScore() const;
     void ResetPositions();
+    bool IsWinner() const;
+    Player& GetWinner() const;
 };
