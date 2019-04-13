@@ -7,8 +7,8 @@ class PongGame : public ofBaseApp {
 private:
     PongAI *pong;
 	vector<Player*> players;
-	enum GameState {RUNNING, COMPLETED};
-	GameState gamestate = RUNNING;
+	enum GameState {TWOAI, MIXED, TWOHUMAN, COMPLETED, MENU};
+	GameState gamestate = TWOAI;
 	bool CheckForWinner();
 	void DrawRunning();
 	void DrawCompleted();

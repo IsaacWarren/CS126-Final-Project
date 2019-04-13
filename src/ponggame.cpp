@@ -4,9 +4,10 @@
 void PongGame::setup() {
     ofSetWindowTitle("Pong");
     ofBackground(0,0,0);
-    players.push_back(new Human(0));
-    players.push_back(new Human(1240));
+    players.push_back(new AI(0));
+    players.push_back(new AI(1240));
     pong = new PongAI(*players[0], *players[1]);
+    players.clear();
 }
 
 void PongGame::exit() {
@@ -22,14 +23,14 @@ void PongGame::exit() {
 }
 
 void PongGame::update() {
-    if (gamestate == RUNNING) {
+    if (gamestate == TWOAI) {
         pong->Update();
         CheckForWinner();
     }
 }
 
 void PongGame::draw() {
-    if (gamestate == RUNNING) {
+    if (gamestate == TWOAI) {
         DrawRunning();
     } else if (gamestate == COMPLETED) {
         DrawCompleted();
@@ -71,8 +72,8 @@ void PongGame::keyReleased(int key) {
 }
 
 bool PongGame::CheckForWinner() {
-    if (pong->GetPlayer1Score() == pong->GetWinningScore() || pong->GetPlayer2Score() == pong->GetWinningScore()) {
-        gamestate = COMPLETED;
+    if (pong->IsWinner()) {
+        Reset();
         return true;
     }
 
@@ -102,8 +103,10 @@ void PongGame::DrawCompleted() {
 }
 
 void PongGame::Reset() {
-    gamestate = RUNNING;
-    pong->ResetPlayer1Score();
-    pong->ResetPlayer2Score();
-    pong->ResetPositions();
+    delete pong;
+    players.push_back(new AI(0));
+    players.push_back(new AI(1240));
+    pong = new PongAI(*players[0], *players[1]);
+    players.clear();
+    gamestate = TWOAI;
 }

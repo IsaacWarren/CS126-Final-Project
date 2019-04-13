@@ -16,7 +16,7 @@ private:
 
     const int BOARDHEIGHT = 720;
     const int BOARDWIDTH = 1280;
-    const int WINNINGSCORE = 7;
+    const int WINNINGSCORE = 3;
     
     void UpdateScore();
     void UpdateBall();
