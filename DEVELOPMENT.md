@@ -4,4 +4,4 @@
 
     You can now play against a simple AI that is randomly generated. At first I was trying to store the fann object with a unique ptr but that was being weird. I  figured I can store all of them in a vector anyways so I now just allocate them on the stack. There is a bug in fann that doesn't let you use the default method to define your network so I have to use the function that takes an array of layer sizes. Unfortunately I couldn't find a way to seed the random number generator used to initialize the network.
 
-    I need to research qlearning
+    AI offspring creation is now working correctly, this library for neural networks is kinda garbage, multiple times there have been some methods that are just broken or segfault when you call them. Some of my methods have to be written in a particular way to work around this.
