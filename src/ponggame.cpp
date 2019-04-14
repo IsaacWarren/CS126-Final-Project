@@ -103,9 +103,16 @@ void PongGame::DrawCompleted() {
 }
 
 void PongGame::Reset() {
-    delete pong;
-    players.push_back(new AI(0));
-    players.push_back(new AI(1240));
+    players.push_back(pong->GetWinner().GenerateOffspring());
+    players.push_back(pong->GetWinner().GenerateOffspring());
+
+    if (pong != nullptr) {
+        delete pong;
+    }
+
+    players[0]->GetPaddle().SetPosition(0, PongAI::GetBoardHeight() / 2);
+    players[1]->GetPaddle().SetPosition(1240, PongAI::GetBoardHeight() / 2);
+ 
     pong = new PongAI(*players[0], *players[1]);
     players.clear();
     gamestate = TWOAI;

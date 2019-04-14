@@ -10,4 +10,5 @@ public:
     void Update(const ofVec2f& balposition);
     void SetDirection(const int toset);
     Paddle& GetPaddle();
+    Human* GenerateOffspring();
 };

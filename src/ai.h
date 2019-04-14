@@ -17,9 +17,10 @@ private:
     FANN::neural_net net;
 public:
     AI(const int startx);
-    AI(const int startx, FANN::neural_net);
+    AI(const int startx, FANN::connection *connectionsarray);
+    void SetNet(const FANN::neural_net nettoset);
     void Update(const ofVec2f& ballposition);
     void SetDirection(const int toset){};
     Paddle& GetPaddle();
-    AI GenerateOffspring();
+    AI* GenerateOffspring();
 };

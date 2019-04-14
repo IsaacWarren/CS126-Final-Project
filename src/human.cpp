@@ -17,3 +17,7 @@ void Human::SetDirection(const int toset) {
 Paddle& Human::GetPaddle() {
     return paddle;
 }
+
+Human* Human::GenerateOffspring() {
+    return new Human(GetPaddle().GetPosition().x);
+}

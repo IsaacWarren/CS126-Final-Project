@@ -12,4 +12,5 @@ public:
     virtual void Update(const ofVec2f& ballposition) = 0;
     virtual void SetDirection(const int toset) = 0;
     virtual Paddle& GetPaddle() = 0;
+    virtual Player* GenerateOffspring() = 0;
 };
