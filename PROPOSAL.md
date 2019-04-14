@@ -1,4 +1,4 @@
-    My final project proposal is a pong game that can operate in several modes. The first mode is typical two player pong where both paddles are controlled by human players. In training mode two paddles controlled by randomly generated neural networks compete, the winner produces two offspring with mutated weights and the loser dies. This can continue for many generations. The final mode is one human player playing against a trained AI.
+    My final project proposal is a pong game that can operate in several modes. The first mode is typical two player pong where both paddles are controlled by human players. The second mode is a training mode. In this mode AI's compete against each other and the winner of each match of pong gets to create offspring that go into the next generation of training. The final mode is one human player playing against a trained AI. I also want to save and load AI's so you don't have to retrain everytime.
 
     The pong game section shouldn't take too long. I've developed basic games in a python library called pygame before. The graphics functions seem fairly similar so I think I have a decent idea what I'm doing in this regard.
 
