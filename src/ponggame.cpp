@@ -9,7 +9,7 @@ void PongGame::setup() {
         if (i % 2 == 0) {
             players.push_back(new AI(0));
         } else {
-            players.push_back(new Human(1240));
+            players.push_back(new AI(1240));
         }
     }
     pong = new PongAI(*players[0], *players[1]);
@@ -67,6 +67,10 @@ void PongGame::keyPressed(int key) {
     }
     if (key == OF_KEY_DOWN) {
         pong->GetPlayer2().SetDirection(-1);
+    }
+
+    if (key == 't') {
+        RunGeneration();
     }
 
 }
@@ -146,9 +150,17 @@ void PongGame::UpdateMatchGeneration() {
     match++;
 
     if (match == POPULATIONSIZE / 2) {
-        match  = 0;
+        match = 0;
         generation++;
         auto rng = std::default_random_engine {};
         std::shuffle(std::begin(players), std::end(players), rng);
+    }
+}
+
+void PongGame::RunGeneration() {
+    int currentgeneration = generation;
+    while (currentgeneration == generation) {
+        pong->Update();
+        CheckForWinner();
     }
 }

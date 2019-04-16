@@ -22,6 +22,7 @@ private:
 	void DrawTwoAI();
 	void Reset();
 	void UpdateMatchGeneration();
+	void RunGeneration();
 public:
     void setup();
 
