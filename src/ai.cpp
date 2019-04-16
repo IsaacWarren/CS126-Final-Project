@@ -1,14 +1,15 @@
 #include "ai.h"
+#include <stdlib.h>
 
 AI::AI(const int startx): paddle(startx) {
-    const unsigned int creator[] = { num_input, num_neurons_hidden, num_output};
+    const unsigned int creator[] = { num_input, num_neurons_hidden, num_neurons_hidden, num_neurons_hidden, num_output};
     net.create_standard_array(num_layers, creator);
     net.set_activation_function_hidden(FANN::activation_function_enum::SIGMOID_SYMMETRIC);
     net.set_activation_function_output(FANN::activation_function_enum::SIGMOID_SYMMETRIC);
 }
 
 AI::AI(const int startx, FANN::connection* connectionsarray): paddle(startx) {
-    const unsigned int creator[] = {num_input, num_neurons_hidden, num_output};
+    const unsigned int creator[] = {num_input, num_neurons_hidden, num_neurons_hidden, num_neurons_hidden, num_output};
     net.create_standard_array(num_layers, creator);
     net.set_activation_function_hidden(FANN::activation_function_enum::SIGMOID_SYMMETRIC);
     net.set_activation_function_output(FANN::activation_function_enum::SIGMOID_SYMMETRIC);
@@ -17,10 +18,8 @@ AI::AI(const int startx, FANN::connection* connectionsarray): paddle(startx) {
 
 void AI::Update(const ofVec2f& ballposition) {
     fann_type inputarray[num_input];
-    inputarray[0] = ballposition.x;
-    inputarray[1] = ballposition.y;
-    inputarray[2] = paddle.GetPosition().x;
-    inputarray[3] = paddle.GetPosition().y;
+    inputarray[0] = abs((int)ballposition.x - (int)paddle.GetPosition().x);
+    inputarray[1] = abs((int)ballposition.y - (int)paddle.GetPosition().y);
 
     fann_type *outputarray;
     outputarray = net.run(inputarray);

@@ -155,6 +155,10 @@ void PongGame::UpdateMatchGeneration() {
         auto rng = std::default_random_engine {};
         std::shuffle(std::begin(players), std::end(players), rng);
     }
+
+    for (int i = 0; i < POPULATIONSIZE / 5; i++) {
+        players[i] = new AI(0);
+    }
 }
 
 void PongGame::RunGeneration() {

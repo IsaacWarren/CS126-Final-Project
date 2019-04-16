@@ -3,7 +3,7 @@
 class Human : public Player {
 private:
     Paddle paddle;
-    int direction;
+    int direction = 0;
 public:
     Human(const int startx);
     ~Human(){};
