@@ -74,7 +74,7 @@ void PongAI::UpdateBall() {
     if (ballposition.x  <= player1position.x + player1.GetPaddle().GetWidth() &&
                             ballposition.y + ball.GetSize() >= player1position.y &&
                             ballposition.y <= player1position.y + player1.GetPaddle().GetHeight()) {
-        float relativeintersecty = (player1position.y + (player1.GetPaddle().GetHeight()/2)) - ballposition.y + ball.GetSize()/2;
+        float relativeintersecty = (player1position.y + (player1.GetPaddle().GetHeight()/2)) - (ballposition.y + ball.GetSize()/2);
         float normalizedrelativeintersectiony = (relativeintersecty/(player1.GetPaddle().GetHeight()/2));
         float bounceangle = normalizedrelativeintersectiony * ball.GetMaxBounceAngle();
         ballspeed.x = ball.GetStartingSpeed() * cos(bounceangle);
@@ -85,7 +85,7 @@ void PongAI::UpdateBall() {
 
     if (ballposition.x  + ball.GetSize() >= player2position.x && ballposition.y + ball.GetSize() >= player2position.y &&
                             ballposition.y <= player2position.y + player1.GetPaddle().GetHeight()) {
-        float relativeintersecty = (player2position.y + (player2.GetPaddle().GetHeight()/2)) - ballposition.y + ball.GetSize()/2;
+        float relativeintersecty = (player2position.y + (player2.GetPaddle().GetHeight()/2)) - (ballposition.y + ball.GetSize()/2);
         float normalizedrelativeintersectiony = (relativeintersecty/(player2.GetPaddle().GetHeight()/2));
         float bounceangle = normalizedrelativeintersectiony * ball.GetMaxBounceAngle();
         ballspeed.x = ball.GetStartingSpeed() * cos(bounceangle) * -1;

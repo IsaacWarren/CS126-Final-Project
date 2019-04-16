@@ -1,13 +1,18 @@
 #include "ponggame.h"
 
 
+
 void PongGame::setup() {
     ofSetWindowTitle("Pong");
     ofBackground(0,0,0);
-    players.push_back(new AI(0));
-    players.push_back(new AI(1240));
+    for (int i = 0; i < POPULATIONSIZE; i++) {
+        if (i % 2 == 0) {
+            players.push_back(new AI(0));
+        } else {
+            players.push_back(new Human(1240));
+        }
+    }
     pong = new PongAI(*players[0], *players[1]);
-    players.clear();
 }
 
 void PongGame::exit() {
@@ -30,10 +35,14 @@ void PongGame::update() {
 }
 
 void PongGame::draw() {
-    if (gamestate == TWOAI) {
+    if (gamestate == TWOAI || gamestate == MIXED || gamestate == TWOHUMAN) {
         DrawRunning();
     } else if (gamestate == COMPLETED) {
         DrawCompleted();
+    }
+
+    if (gamestate == TWOAI) {
+        DrawTwoAI();
     }
 
 }
@@ -102,18 +111,44 @@ void PongGame::DrawCompleted() {
     }
 }
 
+void PongGame::DrawTwoAI() {
+    ofSetColor(255,255,255);
+    std::string matchstring = "Match: " + std::to_string(match);
+    std::string generationstring = "Generation: " + std::to_string(generation);
+    ofDrawBitmapString(matchstring, PongAI::GetBoardWidth() / 2 - 100, 100);
+    ofDrawBitmapString(generationstring, PongAI::GetBoardWidth() / 2 - 100, 120);
+}
+
 void PongGame::Reset() {
-    players.push_back(pong->GetWinner().GenerateOffspring());
-    players.push_back(pong->GetWinner().GenerateOffspring());
+    Player *player1 = players[match * 2];
+    Player *player2 = players[match * 2 + 1];
+
+    players[match * 2] = (pong->GetWinner().GenerateOffspring());
+    players[match * 2 + 1] = (pong->GetWinner().GenerateOffspring());
 
     if (pong != nullptr) {
         delete pong;
     }
+    delete player1;
+    delete player2;
 
-    players[0]->GetPaddle().SetPosition(0, PongAI::GetBoardHeight() / 2);
-    players[1]->GetPaddle().SetPosition(1240, PongAI::GetBoardHeight() / 2);
+    UpdateMatchGeneration();
+
+    players[match * 2]->GetPaddle().SetPosition(0, PongAI::GetBoardHeight() / 2);
+    players[match * 2 + 1]->GetPaddle().SetPosition(1240, PongAI::GetBoardHeight() / 2);
+
  
-    pong = new PongAI(*players[0], *players[1]);
-    players.clear();
+    pong = new PongAI(*players[match * 2], *players[match * 2 + 1]);
     gamestate = TWOAI;
+}
+
+void PongGame::UpdateMatchGeneration() {
+    match++;
+
+    if (match == POPULATIONSIZE / 2) {
+        match  = 0;
+        generation++;
+        auto rng = std::default_random_engine {};
+        std::shuffle(std::begin(players), std::end(players), rng);
+    }
 }
