@@ -13,4 +13,5 @@ public:
     virtual void SetDirection(const int toset) = 0;
     virtual Paddle& GetPaddle() = 0;
     virtual Player* GenerateOffspring() = 0;
+    virtual bool IsHuman() const = 0;
 };

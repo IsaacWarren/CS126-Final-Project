@@ -11,4 +11,5 @@ public:
     void SetDirection(const int toset);
     Paddle& GetPaddle();
     Human* GenerateOffspring();
+    bool IsHuman() const;
 };

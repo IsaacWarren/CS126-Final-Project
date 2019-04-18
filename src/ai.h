@@ -18,9 +18,10 @@ private:
 public:
     AI(const int startx);
     AI(const int startx, FANN::connection *connectionsarray);
-    void SetNet(const FANN::neural_net nettoset);
+    FANN::neural_net& GetNet();
     void Update(const ofVec2f& ballposition);
     void SetDirection(const int toset){};
     Paddle& GetPaddle();
     AI* GenerateOffspring();
+    bool IsHuman() const;
 };

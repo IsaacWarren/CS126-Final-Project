@@ -48,3 +48,11 @@ AI* AI::GenerateOffspring() {
 
     return new AI(paddle.GetPosition().x, connectionsarray);
 }
+
+FANN::neural_net& AI::GetNet() {
+    return net;
+}
+
+bool AI::IsHuman() const {
+    return false;
+}

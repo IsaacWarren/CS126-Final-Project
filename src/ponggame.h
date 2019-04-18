@@ -16,6 +16,7 @@ private:
 	int generation = 0;
 	int match = 0;
 	const int POPULATIONSIZE = 100;
+	
 	bool CheckForWinner();
 	void DrawRunning();
 	void DrawCompleted();
@@ -23,6 +24,7 @@ private:
 	void Reset();
 	void UpdateMatchGeneration();
 	void RunGeneration();
+	void Save();
 public:
     void setup();
 

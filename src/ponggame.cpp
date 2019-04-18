@@ -16,6 +16,8 @@ void PongGame::setup() {
 }
 
 void PongGame::exit() {
+    Save();
+
     if (pong != nullptr) {
         delete pong;
     }
@@ -138,10 +140,12 @@ void PongGame::Reset() {
 
     UpdateMatchGeneration();
 
-    players[match * 2]->GetPaddle().SetPosition(0, PongAI::GetBoardHeight() / 2);
-    players[match * 2 + 1]->GetPaddle().SetPosition(1240, PongAI::GetBoardHeight() / 2);
+    players[match * 2]->GetPaddle().SetPosition(0,
+                PongAI::GetBoardHeight() / 2 - players[match * 2]->GetPaddle().GetHeight() / 2);
+    players[match * 2 + 1]->GetPaddle().SetPosition(1240,
+                PongAI::GetBoardHeight() / 2 - players[match * 2 + 1]->GetPaddle().GetHeight() / 2);
 
- 
+
     pong = new PongAI(*players[match * 2], *players[match * 2 + 1]);
     gamestate = TWOAI;
 }
@@ -152,19 +156,32 @@ void PongGame::UpdateMatchGeneration() {
     if (match == POPULATIONSIZE / 2) {
         match = 0;
         generation++;
+
+        for (int i = 0; i < POPULATIONSIZE / 5; i++) {
+            players[i] = new AI(0);
+        }
+
         auto rng = std::default_random_engine {};
         std::shuffle(std::begin(players), std::end(players), rng);
     }
 
-    for (int i = 0; i < POPULATIONSIZE / 5; i++) {
-        players[i] = new AI(0);
-    }
+
 }
 
 void PongGame::RunGeneration() {
     int currentgeneration = generation;
-    while (currentgeneration == generation) {
+    while (currentgeneration >= generation - 1000) {
         pong->Update();
         CheckForWinner();
+    }
+}
+
+void PongGame::Save() {
+    for(int i = 0; i < POPULATIONSIZE; ++i) {
+        std::string savefile = "models/" + std::to_string(i) + ".net";
+        if (!players[i]->IsHuman()) {
+            AI* ai = dynamic_cast<AI*>(players[i]);
+            ai->GetNet().save(savefile);
+        }
     }
 }

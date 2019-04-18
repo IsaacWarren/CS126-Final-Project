@@ -1,5 +1,7 @@
 #include "pongai.h"
-#include <random>
+#include <stdio.h>      /* printf, scanf, puts, NULL */
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>
 
 PongAI::PongAI(Player& player1toset, Player& player2toset) :player1(player1toset), player2(player2toset){}
 
@@ -9,6 +11,13 @@ void PongAI::Update() {
     UpdateBall();
     player1.Update(ball.GetPosition());
     player2.Update(ball.GetPosition());
+    srand (time(NULL));
+    if (rand() % 2 + 1 == 2) {
+        lastserv = 1;
+    } else {
+        lastserv = -1;
+    }
+    
 }
 
 Player& PongAI::GetPlayer1(){
