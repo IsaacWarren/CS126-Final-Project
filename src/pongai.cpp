@@ -1,22 +1,16 @@
 #include "pongai.h"
-#include <stdio.h>      /* printf, scanf, puts, NULL */
-#include <stdlib.h>     /* srand, rand */
-#include <time.h>
 
-PongAI::PongAI(Player& player1toset, Player& player2toset) :player1(player1toset), player2(player2toset){}
+
+PongAI::PongAI(Player& player1toset, Player& player2toset) :player1(player1toset), player2(player2toset){
+    generator.seed(time(NULL));
+}
 
 
 void PongAI::Update() {
     UpdateScore();
     UpdateBall();
-    player1.Update(ball.GetPosition());
-    player2.Update(ball.GetPosition());
-    srand (time(NULL));
-    if (rand() % 2 + 1 == 2) {
-        lastserv = 1;
-    } else {
-        lastserv = -1;
-    }
+    player1.Update(ball);
+    player2.Update(ball);
     
 }
 
@@ -76,6 +70,12 @@ void PongAI::UpdateBall() {
         return;
     }
 
+    if (ballposition.x + ball.GetSize() >= player2.GetPaddle().GetPosition().x && training == true) {
+        ballspeed.x *= -1;
+        ball.SetSpeed(ballspeed);
+        return;
+    }
+
     ofVec2f player1position = player1.GetPaddle().GetPosition();
     ofVec2f player2position = player2.GetPaddle().GetPosition();
 
@@ -90,6 +90,8 @@ void PongAI::UpdateBall() {
         ballspeed.y = ball.GetStartingSpeed() * sin(bounceangle) * -1;
 
         ball.SetSpeed(ballspeed);
+        
+        player1.AddHit();
     }
 
     if (ballposition.x  + ball.GetSize() >= player2position.x && ballposition.y + ball.GetSize() >= player2position.y &&
@@ -99,7 +101,10 @@ void PongAI::UpdateBall() {
         float bounceangle = normalizedrelativeintersectiony * ball.GetMaxBounceAngle();
         ballspeed.x = ball.GetStartingSpeed() * cos(bounceangle) * -1;
         ballspeed.y = ball.GetStartingSpeed() * sin(bounceangle) * -1;
+
         ball.SetSpeed(ballspeed);
+
+        player2.AddHit();
     }
 }
 
@@ -109,7 +114,9 @@ void PongAI::ResetPositions() {
     ofVec2f ballspeed;
 
     lastserv *= -1;
-    ballspeed.set(ball.GetStartingSpeed() * lastserv,0);
+    std::uniform_real_distribution<float> distribution(-ball.GetMaxBounceAngle(), ball.GetMaxBounceAngle());
+    float bounceangle = distribution(generator);
+    ballspeed.set(ball.GetStartingSpeed() * cos(bounceangle) * -1, ball.GetStartingSpeed() * sin(bounceangle) * -1);
 
     ball.SetPosition(ballposition);
     ball.SetSpeed(ballspeed);
@@ -125,13 +132,22 @@ const int PongAI::GetWinningScore() const {
 }
 
 bool PongAI::IsWinner() const {
-    return player1score >= WINNINGSCORE || player2score >= WINNINGSCORE;
+    return player1score >= WINNINGSCORE || player2score >= WINNINGSCORE ||
+                 ((player1.GetHits() > hitstowin || player2.GetHits() > hitstowin) && training);
 }
 
 Player& PongAI::GetWinner() const {
-    if (player1score >= WINNINGSCORE) {
+    if (player1.GetHits() > player2.GetHits()) {
         return player1;
     }
 
     return player2;
+}
+
+int PongAI::GetWinnerHits() const {
+    if (player1.GetHits() > player2.GetHits()) {
+        return player1.GetHits();
+    } else {
+        return player2.GetHits();
+    }
 }

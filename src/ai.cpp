@@ -6,6 +6,8 @@ AI::AI(const int startx): paddle(startx) {
     net.create_standard_array(num_layers, creator);
     net.set_activation_function_hidden(FANN::activation_function_enum::SIGMOID_SYMMETRIC);
     net.set_activation_function_output(FANN::activation_function_enum::SIGMOID_SYMMETRIC);
+
+    generator.seed(time(NULL));
 }
 
 AI::AI(const int startx, FANN::connection* connectionsarray): paddle(startx) {
@@ -14,19 +16,23 @@ AI::AI(const int startx, FANN::connection* connectionsarray): paddle(startx) {
     net.set_activation_function_hidden(FANN::activation_function_enum::SIGMOID_SYMMETRIC);
     net.set_activation_function_output(FANN::activation_function_enum::SIGMOID_SYMMETRIC);
     net.set_weight_array(connectionsarray, net.get_total_connections());
+
+    generator.seed(time(NULL));
 }
 
-void AI::Update(const ofVec2f& ballposition) {
+void AI::Update(const Ball& ball) {
     fann_type inputarray[num_input];
-    inputarray[0] = abs((int)ballposition.x - (int)paddle.GetPosition().x);
-    inputarray[1] = abs((int)ballposition.y - (int)paddle.GetPosition().y);
+    inputarray[0] = fabs(ball.GetPosition().x - paddle.GetPosition().x);
+    inputarray[1] = ball.GetPosition().y;
+    inputarray[2] = paddle.GetPosition().y;
+    inputarray[3] = fabs(ball.GetSpeed().x / ball.GetSpeed().y);
 
     fann_type *outputarray;
     outputarray = net.run(inputarray);
 
     if (outputarray[0] > outputarray[1] && outputarray[0] > outputarray[2]) {
         paddle.MoveUp();
-    } else if (outputarray[2] > outputarray[0] && outputarray[2] > outputarray[1]) {
+    } else if (outputarray[1] > outputarray[0] && outputarray[1] > outputarray[2]) {
         paddle.MoveDown();
     }
 }
@@ -36,8 +42,7 @@ Paddle& AI::GetPaddle() {
 }
 
 AI* AI::GenerateOffspring() {
-    std::default_random_engine generator;
-    std::normal_distribution<float> distribution(0,0.1);
+    std::normal_distribution<float> distribution(0, mutationstddev);
 
     FANN::connection connectionsarray[net.get_total_connections()];
     net.get_connection_array(connectionsarray);

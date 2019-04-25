@@ -11,11 +11,16 @@ class PongGame : public ofBaseApp {
 private:
     PongAI *pong;
 	vector<Player*> players;
+	vector<Player*> topplayers;
 	enum GameState {TWOAI, MIXED, TWOHUMAN, COMPLETED, MENU};
 	GameState gamestate = TWOAI;
 	int generation = 0;
 	int match = 0;
-	const int POPULATIONSIZE = 100;
+	bool training = true;
+
+	const int POPULATIONSIZE = 50;
+	const int OFFSPRINGPERTOPPLAYER = 5;
+	const int TOPPLAYERSIZE = POPULATIONSIZE / OFFSPRINGPERTOPPLAYER;
 	
 	bool CheckForWinner();
 	void DrawRunning();
@@ -25,6 +30,7 @@ private:
 	void UpdateMatchGeneration();
 	void RunGeneration();
 	void Save();
+	void CheckForTopPlayer(Player* player);
 public:
     void setup();
 

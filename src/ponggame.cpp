@@ -126,17 +126,13 @@ void PongGame::DrawTwoAI() {
 }
 
 void PongGame::Reset() {
-    Player *player1 = players[match * 2];
-    Player *player2 = players[match * 2 + 1];
 
-    players[match * 2] = (pong->GetWinner().GenerateOffspring());
-    players[match * 2 + 1] = (pong->GetWinner().GenerateOffspring());
+    CheckForTopPlayer(&(pong->GetPlayer1()));
+    CheckForTopPlayer(&(pong->GetPlayer2()));
 
     if (pong != nullptr) {
         delete pong;
     }
-    delete player1;
-    delete player2;
 
     UpdateMatchGeneration();
 
@@ -147,6 +143,7 @@ void PongGame::Reset() {
 
 
     pong = new PongAI(*players[match * 2], *players[match * 2 + 1]);
+    pong->training = training;
     gamestate = TWOAI;
 }
 
@@ -157,12 +154,34 @@ void PongGame::UpdateMatchGeneration() {
         match = 0;
         generation++;
 
-        for (int i = 0; i < POPULATIONSIZE / 5; i++) {
-            players[i] = new AI(0);
+        if (generation >= 10) {
+            training = false;
         }
 
-        auto rng = std::default_random_engine {};
-        std::shuffle(std::begin(players), std::end(players), rng);
+        vector<Player*> nextgen;
+        for (int i = 0; i < topplayers.size(); ++i) {
+            for (int j = 0; j < OFFSPRINGPERTOPPLAYER && nextgen.size() < POPULATIONSIZE; ++j) {
+                nextgen.push_back(topplayers[i]->GenerateOffspring());
+            }
+        }
+
+        for (Player* playerpointer : players) {
+            if (playerpointer != nullptr) {
+                delete playerpointer;
+            }
+        }
+        players.clear();
+
+        players = nextgen;
+        nextgen.clear();
+        topplayers.clear();
+
+        for (int i = 0; i < POPULATIONSIZE / 5; ++i) {
+            delete players[i];
+            players[i] = new AI(0);
+        }
+        
+        std::random_shuffle(players.begin(), players.end());
     }
 
 
@@ -170,7 +189,7 @@ void PongGame::UpdateMatchGeneration() {
 
 void PongGame::RunGeneration() {
     int currentgeneration = generation;
-    while (currentgeneration >= generation - 1000) {
+    while (currentgeneration >= generation - 9) {
         pong->Update();
         CheckForWinner();
     }
@@ -182,6 +201,20 @@ void PongGame::Save() {
         if (!players[i]->IsHuman()) {
             AI* ai = dynamic_cast<AI*>(players[i]);
             ai->GetNet().save(savefile);
+        }
+    }
+}
+
+void PongGame::CheckForTopPlayer(Player* player) {
+    if (topplayers.size() < TOPPLAYERSIZE) {
+        topplayers.push_back(player);
+    }
+
+    for (int i = 0; i < topplayers.size(); ++i) {
+        if (player->GetHits() > topplayers[i]->GetHits()) {
+            Player *tocheck  = topplayers[i];
+            topplayers[i] = player;
+            CheckForTopPlayer(tocheck);
         }
     }
 }

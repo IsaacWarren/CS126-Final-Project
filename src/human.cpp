@@ -2,7 +2,7 @@
 
 Human::Human(const int startx) : paddle(startx) {}
 
-void Human::Update(const ofVec2f& balposition) {
+void Human::Update(const Ball& ball) {
     if (direction < 0) {
         paddle.MoveUp();
     } else if (direction > 0) {

@@ -7,7 +7,7 @@ private:
 public:
     Human(const int startx);
     ~Human(){};
-    void Update(const ofVec2f& balposition);
+    void Update(const Ball& ball);
     void SetDirection(const int toset);
     Paddle& GetPaddle();
     Human* GenerateOffspring();
