@@ -70,7 +70,7 @@ void PongAI::UpdateBall() {
         return;
     }
 
-    if (ballposition.x + ball.GetSize() >= player2.GetPaddle().GetPosition().x && training == true) {
+    if (ballposition.x + ball.GetSize() >= player2.GetPaddle().GetPosition().x && solidwall == true) {
         ballspeed.x *= -1;
         ball.SetSpeed(ballspeed);
         return;
@@ -133,7 +133,7 @@ const int PongAI::GetWinningScore() const {
 
 bool PongAI::IsWinner() const {
     return player1score >= WINNINGSCORE || player2score >= WINNINGSCORE ||
-                 ((player1.GetHits() > hitstowin || player2.GetHits() > hitstowin) && training);
+                 ((player1.GetHits() > hitstowin || player2.GetHits() > hitstowin));
 }
 
 Player& PongAI::GetWinner() const {

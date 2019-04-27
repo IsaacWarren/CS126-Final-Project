@@ -34,6 +34,10 @@ void PongGame::update() {
         pong->Update();
         CheckForWinner();
     }
+
+    if (gamestate == FASTTRAIN) {
+        RunGeneration();
+    }
 }
 
 void PongGame::draw() {
@@ -44,6 +48,10 @@ void PongGame::draw() {
     }
 
     if (gamestate == TWOAI) {
+        DrawTwoAI();
+    }
+
+    if (gamestate == FASTTRAIN) {
         DrawTwoAI();
     }
 
@@ -71,8 +79,10 @@ void PongGame::keyPressed(int key) {
         pong->GetPlayer2().SetDirection(-1);
     }
 
-    if (key == 't') {
-        RunGeneration();
+    if (key == 't' && gamestate == TWOAI) {
+        gamestate = FASTTRAIN;
+    } else if (key == 't' && gamestate == FASTTRAIN) {
+        gamestate = TWOAI;
     }
 
 }
@@ -143,8 +153,7 @@ void PongGame::Reset() {
 
 
     pong = new PongAI(*players[match * 2], *players[match * 2 + 1]);
-    pong->training = training;
-    gamestate = TWOAI;
+    pong->solidwall = solidwall;
 }
 
 void PongGame::UpdateMatchGeneration() {
@@ -154,8 +163,8 @@ void PongGame::UpdateMatchGeneration() {
         match = 0;
         generation++;
 
-        if (generation >= 10) {
-            training = false;
+        if (generation >= SOLIDWALLGENERATIONS) {
+            solidwall = false;
         }
 
         vector<Player*> nextgen;
@@ -176,7 +185,7 @@ void PongGame::UpdateMatchGeneration() {
         nextgen.clear();
         topplayers.clear();
 
-        for (int i = 0; i < POPULATIONSIZE / 5; ++i) {
+        for (int i = 0; i < NEWPLAYERS; ++i) {
             delete players[i];
             players[i] = new AI(0);
         }
@@ -189,7 +198,7 @@ void PongGame::UpdateMatchGeneration() {
 
 void PongGame::RunGeneration() {
     int currentgeneration = generation;
-    while (currentgeneration >= generation - 9) {
+    while (currentgeneration >= generation) {
         pong->Update();
         CheckForWinner();
     }

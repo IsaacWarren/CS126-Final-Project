@@ -28,7 +28,7 @@ private:
     void UpdateScore();
     void UpdateBall();
 public:
-    bool training = false;
+    bool solidwall = false;
     static int GetBoardHeight() {return 720;};
     static int GetBoardWidth() {return 1280;};
     PongAI(Player& player1, Player& player2);

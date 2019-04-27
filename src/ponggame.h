@@ -12,15 +12,17 @@ private:
     PongAI *pong;
 	vector<Player*> players;
 	vector<Player*> topplayers;
-	enum GameState {TWOAI, MIXED, TWOHUMAN, COMPLETED, MENU};
+	enum GameState {TWOAI, MIXED, TWOHUMAN, COMPLETED, MENU, FASTTRAIN};
 	GameState gamestate = TWOAI;
 	int generation = 0;
 	int match = 0;
-	bool training = true;
+	bool solidwall = true;
 
 	const int POPULATIONSIZE = 50;
 	const int OFFSPRINGPERTOPPLAYER = 5;
 	const int TOPPLAYERSIZE = POPULATIONSIZE / OFFSPRINGPERTOPPLAYER;
+	const int SOLIDWALLGENERATIONS = 10;
+	const int NEWPLAYERS = POPULATIONSIZE / 5;
 	
 	bool CheckForWinner();
 	void DrawRunning();

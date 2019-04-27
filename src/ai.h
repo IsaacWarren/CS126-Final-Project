@@ -15,7 +15,7 @@ private:
     const unsigned int num_output = 3;
     const unsigned int num_layers = 5;
     const unsigned int num_neurons_hidden = 20;
-    const float mutationstddev = 1;
+    const float mutationstddev = 0.5;
 
     std::default_random_engine generator;
 
