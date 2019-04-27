@@ -7,9 +7,9 @@ void PongGame::setup() {
     ofBackground(0,0,0);
     for (int i = 0; i < POPULATIONSIZE; i++) {
         if (i % 2 == 0) {
-            players.push_back(new AI(0));
+            players.push_back(new AI(PLAYER1X));
         } else {
-            players.push_back(new AI(1240));
+            players.push_back(new AI(PLAYER2X));
         }
     }
     pong = new PongAI(*players[0], *players[1]);
@@ -146,9 +146,9 @@ void PongGame::Reset() {
 
     UpdateMatchGeneration();
 
-    players[match * 2]->GetPaddle().SetPosition(0,
+    players[match * 2]->GetPaddle().SetPosition(PLAYER1X,
                 PongAI::GetBoardHeight() / 2 - players[match * 2]->GetPaddle().GetHeight() / 2);
-    players[match * 2 + 1]->GetPaddle().SetPosition(1240,
+    players[match * 2 + 1]->GetPaddle().SetPosition(PLAYER2X,
                 PongAI::GetBoardHeight() / 2 - players[match * 2 + 1]->GetPaddle().GetHeight() / 2);
 
 

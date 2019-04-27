@@ -18,6 +18,8 @@ private:
 	int match = 0;
 	bool solidwall = true;
 
+	const int PLAYER1X = 0;
+	const int PLAYER2X = 1240;
 	const int POPULATIONSIZE = 50;
 	const int OFFSPRINGPERTOPPLAYER = 5;
 	const int TOPPLAYERSIZE = POPULATIONSIZE / OFFSPRINGPERTOPPLAYER;
