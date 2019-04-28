@@ -13,7 +13,7 @@ private:
 	vector<Player*> players;
 	vector<Player*> topplayers;
 	enum GameState {TWOAI, MIXED, TWOHUMAN, COMPLETED, MENU, FASTTRAIN};
-	GameState gamestate = TWOAI;
+	GameState gamestate = MENU;
 	int generation = 0;
 	int match = 0;
 	bool solidwall = true;
@@ -30,10 +30,12 @@ private:
 	void DrawRunning();
 	void DrawCompleted();
 	void DrawTwoAI();
+	void DrawMenu();
 	void Reset();
 	void UpdateMatchGeneration();
 	void RunGeneration();
 	void Save();
+	void Load();
 	void CheckForTopPlayer(Player* player);
 public:
     void setup();

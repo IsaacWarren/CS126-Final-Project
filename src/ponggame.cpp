@@ -16,7 +16,6 @@ void PongGame::setup() {
 }
 
 void PongGame::exit() {
-    Save();
 
     if (pong != nullptr) {
         delete pong;
@@ -55,21 +54,37 @@ void PongGame::draw() {
         DrawTwoAI();
     }
 
+    if (gamestate == MENU) {
+        DrawMenu();
+    }
+
 }
 
 void PongGame::keyPressed(int key) {
-    if (key == 'r') {
+    if (key == 'r' && gamestate == TWOHUMAN || gamestate == MIXED) {
         Reset();
     }
 
-    if (key == OF_KEY_ESC) {
-        ofExit();
+    if (key == 'm') {
+        gamestate = MENU;
+    }
+
+    if (key == 't') {
+        gamestate = TWOAI;
+    }
+
+    if (key == 's' && gamestate == TWOAI) {
+        Save();
+    }
+
+    if (key == 'l') {
+        Load();
     }
 
     if (key == 'w') {
         pong->GetPlayer1().SetDirection(1);
     }
-    if (key == 's') {
+    if (key == 's' && gamestate != TWOAI) {
         pong->GetPlayer1().SetDirection(-1);
     }
     if (key == OF_KEY_UP) {
@@ -79,9 +94,9 @@ void PongGame::keyPressed(int key) {
         pong->GetPlayer2().SetDirection(-1);
     }
 
-    if (key == 't' && gamestate == TWOAI) {
+    if (key == 'q' && gamestate == TWOAI) {
         gamestate = FASTTRAIN;
-    } else if (key == 't' && gamestate == FASTTRAIN) {
+    } else if (key == 'q' && gamestate == FASTTRAIN) {
         gamestate = TWOAI;
     }
 
@@ -91,7 +106,7 @@ void PongGame::keyReleased(int key) {
     if (key == OF_KEY_UP || key == OF_KEY_DOWN) {
         pong->GetPlayer2().SetDirection(0);
     }
-    if (key == 'w' || key == 's') {
+    if (key == 'w' || key == 's' && gamestate != TWOAI) {
         pong->GetPlayer1().SetDirection(0);
     }
 }
@@ -133,6 +148,14 @@ void PongGame::DrawTwoAI() {
     std::string generationstring = "Generation: " + std::to_string(generation);
     ofDrawBitmapString(matchstring, PongAI::GetBoardWidth() / 2 - 100, 100);
     ofDrawBitmapString(generationstring, PongAI::GetBoardWidth() / 2 - 100, 120);
+    ofDrawBitmapString("Press q to toggle quick training", PongAI::GetBoardWidth() / 2 - 150, 140);
+}
+
+void PongGame::DrawMenu() {
+    ofDrawBitmapString("Press t to train, press a to play an ai, press h for two human players and press m to get back to this menu",
+                    PongAI::GetBoardWidth() / 2 - 400, 100);
+    ofDrawBitmapString("Press s to save the models training and press l to load models from the models file",
+                    PongAI::GetBoardWidth() / 2 - 300, 120);
 }
 
 void PongGame::Reset() {
@@ -205,13 +228,39 @@ void PongGame::RunGeneration() {
 }
 
 void PongGame::Save() {
-    for(int i = 0; i < POPULATIONSIZE; ++i) {
+    for (int i = 0; i < POPULATIONSIZE; ++i) {
         std::string savefile = "models/" + std::to_string(i) + ".net";
         if (!players[i]->IsHuman()) {
             AI* ai = dynamic_cast<AI*>(players[i]);
             ai->GetNet().save(savefile);
         }
     }
+}
+
+void PongGame::Load() {
+    for (Player *playerptr : players) {
+        delete playerptr;
+    }
+
+    for (int i  = 0; i < POPULATIONSIZE; ++i) {
+        std::string loadfilestring = "models/" + std::to_string(i) + ".net";
+        std::ifstream loadfilestream(loadfilestring);
+        if (loadfilestream.good()) {
+            loadfilestream.close();
+
+            FANN::neural_net net;
+            net.create_from_file(loadfilestring);
+            FANN::connection connectionsarray[net.get_total_connections()];
+            net.get_connection_array(connectionsarray);
+
+            players[i] = new AI(0, connectionsarray);
+        } else {
+            loadfilestream.close();
+            players[i] = new AI(0);
+        }
+    }
+
+    Reset();
 }
 
 void PongGame::CheckForTopPlayer(Player* player) {
