@@ -37,6 +37,10 @@ void PongGame::update() {
     if (gamestate == FASTTRAIN) {
         RunGeneration();
     }
+
+    if (gamestate == TWOHUMAN) {
+        pong->Update();
+    }
 }
 
 void PongGame::draw() {
@@ -62,7 +66,7 @@ void PongGame::draw() {
 
 void PongGame::keyPressed(int key) {
     if (key == 'r' && gamestate == TWOHUMAN || gamestate == MIXED) {
-        Reset();
+        ResetWithHuman();
     }
 
     if (key == 'm') {
@@ -71,6 +75,11 @@ void PongGame::keyPressed(int key) {
 
     if (key == 't') {
         gamestate = TWOAI;
+    }
+
+    if (key == 'h') {
+        gamestate = TWOHUMAN;
+        ResetWithHuman();
     }
 
     if (key == 's' && gamestate == TWOAI) {
@@ -113,7 +122,7 @@ void PongGame::keyReleased(int key) {
 
 bool PongGame::CheckForWinner() {
     if (pong->IsWinner()) {
-        Reset();
+        ResetTwoAI();
         return true;
     }
 
@@ -136,9 +145,9 @@ void PongGame::DrawRunning() {
 void PongGame::DrawCompleted() {
     ofSetColor(255,255,255);
     if (pong->GetPlayer1Score() > pong->GetPlayer2Score()) {
-        ofDrawBitmapString("Player1 won press R to Reset", PongAI::GetBoardWidth() / 2 - 100, 100);
+        ofDrawBitmapString("Player1 won press R to ResetTwoAI", PongAI::GetBoardWidth() / 2 - 100, 100);
     } else {
-        ofDrawBitmapString("Player2 won press R to Reset", PongAI::GetBoardWidth() / 2 - 100, 100);
+        ofDrawBitmapString("Player2 won press R to ResetTwoAI", PongAI::GetBoardWidth() / 2 - 100, 100);
     }
 }
 
@@ -158,7 +167,7 @@ void PongGame::DrawMenu() {
                     PongAI::GetBoardWidth() / 2 - 300, 120);
 }
 
-void PongGame::Reset() {
+void PongGame::ResetTwoAI() {
 
     CheckForTopPlayer(&(pong->GetPlayer1()));
     CheckForTopPlayer(&(pong->GetPlayer2()));
@@ -177,6 +186,18 @@ void PongGame::Reset() {
 
     pong = new PongAI(*players[match * 2], *players[match * 2 + 1]);
     pong->solidwall = solidwall;
+}
+
+void PongGame::ResetWithHuman() {
+    if (gamestate == TWOHUMAN) {
+        delete pong;
+
+        human1->GetPaddle().SetPosition(PLAYER1X,
+                PongAI::GetBoardHeight() / 2 - players[match * 2]->GetPaddle().GetHeight() / 2);
+        human2->GetPaddle().SetPosition(PLAYER2X,
+                PongAI::GetBoardHeight() / 2 - players[match * 2 + 1]->GetPaddle().GetHeight() / 2);
+        pong = new PongAI(*human1, *human2);
+    }
 }
 
 void PongGame::UpdateMatchGeneration() {
@@ -260,7 +281,7 @@ void PongGame::Load() {
         }
     }
 
-    Reset();
+    ResetTwoAI();
 }
 
 void PongGame::CheckForTopPlayer(Player* player) {

@@ -9,15 +9,6 @@
 
 class PongGame : public ofBaseApp {
 private:
-    PongAI *pong;
-	vector<Player*> players;
-	vector<Player*> topplayers;
-	enum GameState {TWOAI, MIXED, TWOHUMAN, COMPLETED, MENU, FASTTRAIN};
-	GameState gamestate = MENU;
-	int generation = 0;
-	int match = 0;
-	bool solidwall = true;
-
 	const int PLAYER1X = 0;
 	const int PLAYER2X = 1240;
 	const int POPULATIONSIZE = 50;
@@ -25,13 +16,26 @@ private:
 	const int TOPPLAYERSIZE = POPULATIONSIZE / OFFSPRINGPERTOPPLAYER;
 	const int SOLIDWALLGENERATIONS = 10;
 	const int NEWPLAYERS = POPULATIONSIZE / 5;
+
+	PongAI *pong;
+	vector<Player*> players;
+	vector<Player*> topplayers;
+	enum GameState {TWOAI, MIXED, TWOHUMAN, COMPLETED, MENU, FASTTRAIN};
+	GameState gamestate = MENU;
+	int generation = 0;
+	int match = 0;
+	int humanvsaiindex = 0;
+	bool solidwall = true;
+	Player *human1 = new Human(PLAYER1X);
+	Player *human2 = new Human(PLAYER2X);
 	
 	bool CheckForWinner();
 	void DrawRunning();
 	void DrawCompleted();
 	void DrawTwoAI();
 	void DrawMenu();
-	void Reset();
+	void ResetTwoAI();
+	void ResetWithHuman();
 	void UpdateMatchGeneration();
 	void RunGeneration();
 	void Save();
