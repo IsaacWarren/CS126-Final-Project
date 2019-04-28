@@ -34,6 +34,7 @@ private:
 	void DrawCompleted();
 	void DrawTwoAI();
 	void DrawMenu();
+	void DrawMixed();
 	void ResetTwoAI();
 	void ResetWithHuman();
 	void UpdateMatchGeneration();

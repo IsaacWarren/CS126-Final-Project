@@ -38,7 +38,7 @@ void PongGame::update() {
         RunGeneration();
     }
 
-    if (gamestate == TWOHUMAN) {
+    if (gamestate == TWOHUMAN || gamestate == MIXED) {
         pong->Update();
     }
 }
@@ -62,10 +62,14 @@ void PongGame::draw() {
         DrawMenu();
     }
 
+    if (gamestate == MIXED) {
+        DrawMixed();
+    } 
+
 }
 
 void PongGame::keyPressed(int key) {
-    if (key == 'r' && gamestate == TWOHUMAN || gamestate == MIXED) {
+    if (key == 'r' && (gamestate == TWOHUMAN || gamestate == MIXED)) {
         ResetWithHuman();
     }
 
@@ -75,10 +79,16 @@ void PongGame::keyPressed(int key) {
 
     if (key == 't') {
         gamestate = TWOAI;
+        ResetTwoAI();
     }
 
     if (key == 'h') {
         gamestate = TWOHUMAN;
+        ResetWithHuman();
+    }
+
+    if (key == 'a') {
+        gamestate = MIXED;
         ResetWithHuman();
     }
 
@@ -88,6 +98,15 @@ void PongGame::keyPressed(int key) {
 
     if (key == 'l') {
         Load();
+    }
+
+    if (key == OF_KEY_LEFT && humanvsaiindex > 0) {
+        --humanvsaiindex;
+        ResetWithHuman();
+    }
+    if (key == OF_KEY_RIGHT && humanvsaiindex < POPULATIONSIZE - 1) {
+        ++humanvsaiindex;
+        ResetWithHuman();
     }
 
     if (key == 'w') {
@@ -115,7 +134,7 @@ void PongGame::keyReleased(int key) {
     if (key == OF_KEY_UP || key == OF_KEY_DOWN) {
         pong->GetPlayer2().SetDirection(0);
     }
-    if (key == 'w' || key == 's' && gamestate != TWOAI) {
+    if ((key == 'w' || key == 's') && gamestate != TWOAI) {
         pong->GetPlayer1().SetDirection(0);
     }
 }
@@ -165,6 +184,16 @@ void PongGame::DrawMenu() {
                     PongAI::GetBoardWidth() / 2 - 400, 100);
     ofDrawBitmapString("Press s to save the models training and press l to load models from the models file",
                     PongAI::GetBoardWidth() / 2 - 300, 120);
+    ofDrawBitmapString("Use either w/s or up/down to control a human paddle", PongAI::GetBoardWidth() / 2 - 200, 140);
+}
+
+void PongGame::DrawMixed() {
+    ofSetColor(255,255,255);
+    
+    std::string opponentcounter = "Opponent: " + std::to_string(humanvsaiindex);
+    ofDrawBitmapString("Use the left and right arrow keys to change opponenets", PongAI::GetBoardWidth() / 2 - 200, 100);
+    ofDrawBitmapString(opponentcounter, PongAI::GetBoardWidth() / 2 - 75, 120);
+
 }
 
 void PongGame::ResetTwoAI() {
@@ -193,10 +222,18 @@ void PongGame::ResetWithHuman() {
         delete pong;
 
         human1->GetPaddle().SetPosition(PLAYER1X,
-                PongAI::GetBoardHeight() / 2 - players[match * 2]->GetPaddle().GetHeight() / 2);
+                PongAI::GetBoardHeight() / 2 - human1->GetPaddle().GetHeight() / 2);
         human2->GetPaddle().SetPosition(PLAYER2X,
-                PongAI::GetBoardHeight() / 2 - players[match * 2 + 1]->GetPaddle().GetHeight() / 2);
+                PongAI::GetBoardHeight() / 2 - human2->GetPaddle().GetHeight() / 2);
         pong = new PongAI(*human1, *human2);
+    } else if (gamestate == MIXED) {
+        delete pong;
+
+        players[humanvsaiindex]->GetPaddle().SetPosition(PLAYER1X,
+                PongAI::GetBoardHeight() / 2 - players[humanvsaiindex]->GetPaddle().GetHeight() / 2);
+        human2->GetPaddle().SetPosition(PLAYER2X,
+                PongAI::GetBoardHeight() / 2 - human2->GetPaddle().GetHeight() / 2);
+        pong = new PongAI(*players[humanvsaiindex], *human2);
     }
 }
 
