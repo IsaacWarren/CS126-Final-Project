@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ofMain.h"
 #include "player.h"
 #include "ball.h"
 #include "ai.h"

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ofMain.h"
+
 #include "player.h"
 #include "floatfann.h"
 #include "fann_cpp.h"

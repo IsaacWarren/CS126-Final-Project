@@ -2,25 +2,28 @@
 #include "pongai.h"
 
 Ball::Ball() {
-    position.set(PongAI::GetBoardWidth() / 2, PongAI::GetBoardHeight() / 2);
-    speed.set(STARTINGSPEED, 0);
+    position.push_back(PongAI::GetBoardWidth() / 2);
+    position.push_back(PongAI::GetBoardHeight() / 2);
+
+    speed.push_back(STARTINGSPEED);
+    speed.push_back(0);
 }
 
 void Ball::UpdatePosition() {
-    position.x += speed.x;
-    position.y += speed.y;
+    position[0] += speed[0];
+    position[1] += speed[1];
 }
 
-const ofVec2f& Ball::GetPosition() const {
+const std::vector<float>& Ball::GetPosition() const {
     return position;
 }
 
-void Ball::SetSpeed(const ofVec2f& newspeed) {
-    speed.x = newspeed.x;
-    speed.y = newspeed.y;
+void Ball::SetSpeed(const std::vector<float>& newspeed) {
+    speed[0] = newspeed[0];
+    speed[1] = newspeed[1];
 }
 
-const ofVec2f& Ball::GetSpeed() const {
+const std::vector<float>& Ball::GetSpeed() const {
     return speed;
 }
 
@@ -36,7 +39,7 @@ int Ball::GetStartingSpeed() const {
     return STARTINGSPEED;
 }
 
-void Ball::SetPosition(ofVec2f& newposition) {
-    position.x = newposition.x;
-    position.y = newposition.y;
+void Ball::SetPosition(std::vector<float>& newposition) {
+    position[0] = newposition[0];
+    position[1] = newposition[1];
 }

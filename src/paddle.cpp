@@ -2,22 +2,23 @@
 #include "pongai.h"
 
 Paddle::Paddle(const int startx) {
-    position.set(startx, 285);
+    position.push_back(startx);
+    position.push_back(STARTY);
 }
 
 void Paddle::MoveUp() {
-    if (position.y + HEIGHT <= PongAI::GetBoardHeight()) {
-        position.y += MOVERATE;
+    if (position[1] + HEIGHT <= PongAI::GetBoardHeight()) {
+        position[1] += MOVERATE;
     }
 }
 
 void Paddle::MoveDown() {
-    if (position.y >= 0) {
-        position.y -= MOVERATE;
+    if (position[1] >= 0) {
+        position[1] -= MOVERATE;
     }
 }
 
-const ofVec2f& Paddle::GetPosition() const {
+const std::vector<float>& Paddle::GetPosition() const {
     return position;
 }
 
@@ -30,6 +31,6 @@ const int& Paddle::GetWidth() const {
 }
 
 void Paddle::SetPosition(float newx, float newy) {
-    position.x = newx;
-    position.y = newy;
+    position[0] = newx;
+    position[1] = newy;
 }

@@ -1,24 +1,23 @@
 #pragma once
 
 #include <math.h>
-
-#include "ofMain.h"
+#include <vector>
 
 class Ball {
 private:
-    ofVec2f position;
-    ofVec2f speed;
+    std::vector<float> position;
+    std::vector<float> speed;
 
     const int STARTINGSPEED = 13;
     const int SIZE = 40;
-    const float MAXBOUNCEANGLE = 4*PI/12;
+    const float MAXBOUNCEANGLE = 4*M_PI/12;
 public:
     Ball();
     void UpdatePosition();
-    void SetPosition(ofVec2f& newposition);
-    const ofVec2f& GetPosition() const;
-    void SetSpeed(const ofVec2f& newspeed);
-    const ofVec2f& GetSpeed() const;
+    void SetPosition(std::vector<float>& newposition);
+    const std::vector<float>& GetPosition() const;
+    void SetSpeed(const std::vector<float>& newspeed);
+    const std::vector<float>& GetSpeed() const;
     int GetSize() const;
     float GetMaxBounceAngle() const;
     int GetStartingSpeed() const;

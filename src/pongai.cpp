@@ -43,7 +43,7 @@ void PongAI::ResetPlayer2Score() {
 }
 
 void PongAI::UpdateScore() {
-    float ballx = ball.GetPosition().x;
+    float ballx = ball.GetPosition()[0];
     if (ballx + ball.GetSize() >= BOARDWIDTH) {
         ++player1score;
         ResetPositions();
@@ -55,52 +55,52 @@ void PongAI::UpdateScore() {
 
 void PongAI::UpdateBall() {
     ball.UpdatePosition();
-    ofVec2f ballposition = ball.GetPosition();
-    ofVec2f ballspeed = ball.GetSpeed();
+    std::vector<float> ballposition = ball.GetPosition();
+    std::vector<float> ballspeed = ball.GetSpeed();
 
 
-    if (ballposition.y + ball.GetSize() >= BOARDHEIGHT) {
-        ballspeed.y *= -1;
+    if (ballposition[1] + ball.GetSize() >= BOARDHEIGHT) {
+        ballspeed[1] *= -1;
         ball.SetSpeed(ballspeed);
         return;
     }
-    if (ballposition.y <= 0) {
-        ballspeed.y *= -1;
-        ball.SetSpeed(ballspeed);
-        return;
-    }
-
-    if (ballposition.x + ball.GetSize() >= player2.GetPaddle().GetPosition().x && solidwall == true) {
-        ballspeed.x *= -1;
+    if (ballposition[1] <= 0) {
+        ballspeed[1] *= -1;
         ball.SetSpeed(ballspeed);
         return;
     }
 
-    ofVec2f player1position = player1.GetPaddle().GetPosition();
-    ofVec2f player2position = player2.GetPaddle().GetPosition();
+    if (ballposition[0] + ball.GetSize() >= player2.GetPaddle().GetPosition()[0] && solidwall == true) {
+        ballspeed[0] *= -1;
+        ball.SetSpeed(ballspeed);
+        return;
+    }
+
+    std::vector<float> player1position = player1.GetPaddle().GetPosition();
+    std::vector<float> player2position = player2.GetPaddle().GetPosition();
 
 //https://gamedev.stackexchange.com/questions/4253/in-pong-how-do-you-calculate-the-balls-direction-when-it-bounces-off-the-paddl
-    if (ballposition.x  <= player1position.x + player1.GetPaddle().GetWidth() &&
-                            ballposition.y + ball.GetSize() >= player1position.y &&
-                            ballposition.y <= player1position.y + player1.GetPaddle().GetHeight()) {
-        float relativeintersecty = (player1position.y + (player1.GetPaddle().GetHeight()/2)) - (ballposition.y + ball.GetSize()/2);
+    if (ballposition[0]  <= player1position[0] + player1.GetPaddle().GetWidth() &&
+                            ballposition[1] + ball.GetSize() >= player1position[1] &&
+                            ballposition[1] <= player1position[1] + player1.GetPaddle().GetHeight()) {
+        float relativeintersecty = (player1position[1] + (player1.GetPaddle().GetHeight()/2)) - (ballposition[1] + ball.GetSize()/2);
         float normalizedrelativeintersectiony = (relativeintersecty/(player1.GetPaddle().GetHeight()/2));
         float bounceangle = normalizedrelativeintersectiony * ball.GetMaxBounceAngle();
-        ballspeed.x = ball.GetStartingSpeed() * cos(bounceangle);
-        ballspeed.y = ball.GetStartingSpeed() * sin(bounceangle) * -1;
+        ballspeed[0] = ball.GetStartingSpeed() * cos(bounceangle);
+        ballspeed[1] = ball.GetStartingSpeed() * sin(bounceangle) * -1;
 
         ball.SetSpeed(ballspeed);
         
         player1.AddHit();
     }
 
-    if (ballposition.x  + ball.GetSize() >= player2position.x && ballposition.y + ball.GetSize() >= player2position.y &&
-                            ballposition.y <= player2position.y + player1.GetPaddle().GetHeight()) {
-        float relativeintersecty = (player2position.y + (player2.GetPaddle().GetHeight()/2)) - (ballposition.y + ball.GetSize()/2);
+    if (ballposition[0]  + ball.GetSize() >= player2position[0] && ballposition[1] + ball.GetSize() >= player2position[1] &&
+                            ballposition[1] <= player2position[1] + player1.GetPaddle().GetHeight()) {
+        float relativeintersecty = (player2position[1] + (player2.GetPaddle().GetHeight()/2)) - (ballposition[1] + ball.GetSize()/2);
         float normalizedrelativeintersectiony = (relativeintersecty/(player2.GetPaddle().GetHeight()/2));
         float bounceangle = normalizedrelativeintersectiony * ball.GetMaxBounceAngle();
-        ballspeed.x = ball.GetStartingSpeed() * cos(bounceangle) * -1;
-        ballspeed.y = ball.GetStartingSpeed() * sin(bounceangle) * -1;
+        ballspeed[0] = ball.GetStartingSpeed() * cos(bounceangle) * -1;
+        ballspeed[1] = ball.GetStartingSpeed() * sin(bounceangle) * -1;
 
         ball.SetSpeed(ballspeed);
 
@@ -109,21 +109,23 @@ void PongAI::UpdateBall() {
 }
 
 void PongAI::ResetPositions() {
-    ofVec2f ballposition;
-    ballposition.set(PongAI::GetBoardWidth() / 2, PongAI::GetBoardHeight() / 2);
-    ofVec2f ballspeed;
+    std::vector<float> ballposition;
+    ballposition.push_back(PongAI::GetBoardWidth() / 2);
+    ballposition.push_back(PongAI::GetBoardHeight() / 2);
+    std::vector<float> ballspeed;
 
     lastserv *= -1;
     std::uniform_real_distribution<float> distribution(-ball.GetMaxBounceAngle(), ball.GetMaxBounceAngle());
     float bounceangle = distribution(generator);
-    ballspeed.set(ball.GetStartingSpeed() * cos(bounceangle) * -1, ball.GetStartingSpeed() * sin(bounceangle) * -1);
+    ballspeed.push_back(ball.GetStartingSpeed() * cos(bounceangle) * -1);
+    ballspeed.push_back(ball.GetStartingSpeed() * sin(bounceangle) * -1);
 
     ball.SetPosition(ballposition);
     ball.SetSpeed(ballspeed);
 
-    player1.GetPaddle().SetPosition(player1.GetPaddle().GetPosition().x,
+    player1.GetPaddle().SetPosition(player1.GetPaddle().GetPosition()[0],
                         BOARDHEIGHT / 2 - player1.GetPaddle().GetHeight() / 2);
-    player2.GetPaddle().SetPosition(player2.GetPaddle().GetPosition().x,
+    player2.GetPaddle().SetPosition(player2.GetPaddle().GetPosition()[0],
                         BOARDHEIGHT / 2 - player2.GetPaddle().GetHeight() / 2);
 }
 

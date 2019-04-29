@@ -22,10 +22,10 @@ AI::AI(const int startx, FANN::connection* connectionsarray): paddle(startx) {
 
 void AI::Update(const Ball& ball) {
     fann_type inputarray[num_input];
-    inputarray[0] = fabs(ball.GetPosition().x - paddle.GetPosition().x);
-    inputarray[1] = ball.GetPosition().y;
-    inputarray[2] = paddle.GetPosition().y;
-    inputarray[3] = fabs(ball.GetSpeed().x / ball.GetSpeed().y);
+    inputarray[0] = fabs(ball.GetPosition()[0] - paddle.GetPosition()[0]);
+    inputarray[1] = ball.GetPosition()[1];
+    inputarray[2] = paddle.GetPosition()[1];
+    inputarray[3] = fabs(ball.GetSpeed()[0] / ball.GetSpeed()[1]);
 
     fann_type *outputarray;
     outputarray = net.run(inputarray);
@@ -51,7 +51,7 @@ AI* AI::GenerateOffspring() {
     }
 
 
-    return new AI(paddle.GetPosition().x, connectionsarray);
+    return new AI(paddle.GetPosition()[0], connectionsarray);
 }
 
 FANN::neural_net& AI::GetNet() {

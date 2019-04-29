@@ -151,11 +151,13 @@ bool PongGame::CheckForWinner() {
 void PongGame::DrawRunning() {
     ofSetColor(255,255,255);
 
-    ofDrawRectangle(pong->GetBall().GetPosition(), pong->GetBall().GetSize(), pong->GetBall().GetSize());
-    ofDrawRectangle(pong->GetPlayer1().GetPaddle().GetPosition(), pong->GetPlayer1().GetPaddle().GetWidth(),
-                    pong->GetPlayer1().GetPaddle().GetHeight());
-    ofDrawRectangle(pong->GetPlayer2().GetPaddle().GetPosition(), pong->GetPlayer2().GetPaddle().GetWidth(),
-                     pong->GetPlayer2().GetPaddle().GetHeight());
+    ofDrawRectangle(pong->GetBall().GetPosition()[0],pong->GetBall().GetPosition()[1],
+                     pong->GetBall().GetSize(), pong->GetBall().GetSize());
+
+    ofDrawRectangle(pong->GetPlayer1().GetPaddle().GetPosition()[0],pong->GetPlayer1().GetPaddle().GetPosition()[1],
+                     pong->GetPlayer1().GetPaddle().GetWidth(), pong->GetPlayer1().GetPaddle().GetHeight());
+    ofDrawRectangle(pong->GetPlayer2().GetPaddle().GetPosition()[0],pong->GetPlayer2().GetPaddle().GetPosition()[1],
+                    pong->GetPlayer2().GetPaddle().GetWidth(), pong->GetPlayer2().GetPaddle().GetHeight());
 
     ofDrawBitmapString(pong->GetPlayer1Score(), 200, 100);
     ofDrawBitmapString(pong->GetPlayer2Score(), PongAI::GetBoardWidth() - 210, 100);

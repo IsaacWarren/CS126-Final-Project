@@ -19,7 +19,7 @@ Paddle& Human::GetPaddle() {
 }
 
 Human* Human::GenerateOffspring() {
-    return new Human(GetPaddle().GetPosition().x);
+    return new Human(GetPaddle().GetPosition()[0]);
 }
 
 bool Human::IsHuman() const {
